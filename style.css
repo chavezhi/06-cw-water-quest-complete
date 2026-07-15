@@ -1,0 +1,235 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Avenir", "Proxima Nova", Arial, sans-serif;
+  margin: 0;
+  padding: 30px;
+  background: linear-gradient(135deg, #8BD1CB 0%, #f7fbff 100%);
+  color: #0f3f5c;
+}
+
+.container {
+  max-width: 750px;
+  margin: 50px auto;
+  background-color: #fffdf7;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border: 3px solid #FFC907;
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2E9DF7;
+  font-family: "Proxima Nova", "Avenir", Arial, sans-serif;
+}
+
+.brand-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.brand-title img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 280px);
+  height: auto;
+  max-height: 50px;
+}
+
+.brand-title span {
+  display: block;
+}
+
+.game-instructions {
+  font-size: 18px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #159A48;
+  font-weight: 600;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  background: #FFC907;
+  padding: 15px 0;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.stats p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.achievement {
+  min-height: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #159A48;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.grid-cell {
+  background: linear-gradient(135deg, #e8f7ff 0%, #f7fcff 100%);
+  border: 2px solid #8BD1CB;
+  border-radius: 8px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.grid-cell:hover {
+  transform: translateY(-2px);
+  background: #f0fbff;
+}
+
+.water-can-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  /* Ensure the wrapper is properly centered */
+}
+
+.water-can {
+  width: 100%;
+  height: 100%;
+  background-image: url('img/water-can.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border-radius: 50%;
+  animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
+  transform-origin: center; /* Ensure scaling happens from the center */
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(0.5); /* Start scaling from the center */
+  }
+  100% {
+    transform: scale(1); /* End scaling at full size */
+  }
+}
+
+
+button {
+  background: #2E9DF7;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 30px auto 0;
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-weight: bold;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: #FFC907;
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 16px;
+  }
+
+  .container {
+    padding: 24px;
+    margin: 20px auto;
+  }
+
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .stats p {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .brand-title {
+    flex-direction: column;
+  }
+
+  .brand-title img {
+    height: 40px;
+  }
+
+  .game-instructions {
+    font-size: 16px;
+  }
+
+  .game-grid {
+    gap: 10px;
+  }
+
+  .water-can-wrapper {
+    width: 56px;
+    height: 56px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
