@@ -1,16 +1,42 @@
 // Game configuration and state variables
-const GOAL_CANS = 20;
+const difficultyModes = [
+  {
+    name: 'Easy',
+    goal: 10,
+    time: 45,
+    spawnRate: 1400,
+    description: 'Take your time and collect 10 cans before the clock runs out.'
+  },
+  {
+    name: 'Normal',
+    goal: 20,
+    time: 30,
+    spawnRate: 1000,
+    description: 'Collect 20 cans before the clock runs out.'
+  },
+  {
+    name: 'Hard',
+    goal: 30,
+    time: 25,
+    spawnRate: 600,
+    description: 'Race against the clock and collect 30 cans before time runs out.'
+  }
+];
+
 let currentCans = 0;
 let gameActive = false;
 let spawnInterval;
 let timerInterval;
-let timeLeft = 30;
+let timeLeft = difficultyModes[1].time;
+let currentDifficulty = difficultyModes[1];
 
 const grid = document.querySelector('.game-grid');
 const scoreDisplay = document.getElementById('current-cans');
 const timerDisplay = document.getElementById('timer');
 const achievementDisplay = document.getElementById('achievements');
 const startButton = document.getElementById('start-game');
+const difficultyButtons = document.getElementById('difficulty-buttons');
+const instructionsDisplay = document.getElementById('game-instructions');
 const winningMessages = [
   'You won! Great job saving the water!',
   'Amazing work! You collected enough cans!',
@@ -44,6 +70,47 @@ function clearMessage() {
   achievementDisplay.style.color = '';
 }
 
+function resetGameState() {
+  gameActive = false;
+  currentCans = 0;
+  timeLeft = currentDifficulty.time;
+  clearInterval(spawnInterval);
+  clearInterval(timerInterval);
+  clearMessage();
+  updateScore();
+  updateTimer();
+  createGrid();
+}
+
+function updateDifficultyUI() {
+  difficultyButtons.querySelectorAll('button').forEach((button, index) => {
+    button.classList.toggle('active', difficultyModes[index].name === currentDifficulty.name);
+  });
+
+  instructionsDisplay.innerHTML = `${currentDifficulty.description}<br>Goal: ${currentDifficulty.goal} cans.<br>Time: ${currentDifficulty.time} seconds.`;
+  resetGameState();
+}
+
+function renderDifficultyButtons() {
+  difficultyButtons.innerHTML = '';
+
+  difficultyModes.forEach((mode, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'difficulty-button';
+    button.textContent = mode.name;
+
+    button.addEventListener('click', () => {
+      currentDifficulty = difficultyModes[index];
+      updateDifficultyUI();
+    });
+
+    difficultyButtons.appendChild(button);
+  });
+
+  updateDifficultyUI();
+}
+
 // Creates the 3x3 game grid where items will appear
 function createGrid() {
   grid.innerHTML = '';
@@ -56,6 +123,7 @@ function createGrid() {
 
 // Ensure the grid is created when the page loads
 createGrid();
+renderDifficultyButtons();
 
 // Spawns a new item in a random grid cell
 function spawnWaterCan() {
@@ -78,7 +146,7 @@ function startGame() {
 
   gameActive = true;
   currentCans = 0;
-  timeLeft = 30;
+  timeLeft = currentDifficulty.time;
   updateScore();
   updateTimer();
   clearMessage();
@@ -87,13 +155,13 @@ function startGame() {
 
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
-  spawnInterval = setInterval(spawnWaterCan, 1000);
+  spawnInterval = setInterval(spawnWaterCan, currentDifficulty.spawnRate);
   timerInterval = setInterval(() => {
     timeLeft -= 1;
     updateTimer();
 
     if (timeLeft <= 0) {
-      endGame(currentCans >= GOAL_CANS);
+      endGame(currentCans >= currentDifficulty.goal);
     }
   }, 1000);
 }
@@ -114,11 +182,10 @@ function handleCanClick(event) {
   currentCans += 1;
   updateScore();
 
-  if (currentCans >= GOAL_CANS) {
+  if (currentCans >= currentDifficulty.goal) {
     endGame(true);
     return;
   }
-
 }
 
 startButton.addEventListener('click', startGame);
